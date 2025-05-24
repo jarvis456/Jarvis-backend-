@@ -1,0 +1,25 @@
+{
+  "name": "jarvis-backend",
+  "version": "1.0.0",
+  "description": "Backend multiagente para asistentes de código IA",
+  "main": "app.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [
+    "multiagente",
+    "AI",
+    "backend",
+    "express"
+  ],
+  "author": "josu983",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
