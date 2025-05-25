@@ -1,0 +1,9 @@
+jarvis-backend/
+├─ app.js
+├─ package.json
+├─ routes/
+│   └─ agentRoutes.js   ← (este archivo)
+├─ controllers/
+│   └─ agentController.js
+├─ services/
+│   └─ agentPrompts.js
