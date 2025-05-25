@@ -1,0 +1,33 @@
+const agentPrompts = require('../services/agentPrompts');
+const AGENTS = Object.keys(agentPrompts);
+
+// Simulación de llamada a LLM. Cambia esto por tu integración real (OpenAI, etc.)
+async function callLLM({ system, user, ...context }) {
+  // Aquí deberías integrar tu modelo IA real (OpenAI, Anthropic, etc.)
+  // Por ahora solo simula la respuesta.
+  return `[Simulación IA]\nPrompt del agente:\n${system.slice(0, 80)}...\n\nMensaje del usuario:\n${user}`;
+}
+
+// Para un solo agente
+exports.runAgent = async (req, res) => {
+  const { agent, userMessage, ...context } = req.body;
+  const prompt = agentPrompts[agent] || agentPrompts[AGENTS[0]];
+  const llmInput = { system: prompt, user: userMessage, ...context };
+  const response = await callLLM(llmInput);
+  res.json({ result: response });
+};
+
+// Para el modo comité/fusión: todos los agentes responden
+exports.runCommittee = async (req, res) => {
+  const { userMessage, ...context } = req.body;
+  const agentsToUse = AGENTS.filter(a => a !== 'fusion');
+  const responses = await Promise.all(
+    agentsToUse.map(agent =>
+      callLLM({ system: agentPrompts[agent], user: userMessage, ...context })
+    )
+  );
+  const committeeResponse = responses
+    .map((resp, idx) => `### Respuesta de ${agentsToUse[idx]}:\n${resp}`)
+    .join('\n\n');
+  res.json({ result: committeeResponse });
+};
